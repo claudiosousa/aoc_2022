@@ -27,4 +27,4 @@ const idx1 =
   packets.findIndex(a => JSON.stringify(a) == JSON.stringify([[2]])) + 1;
 const idx2 =
   packets.findIndex(a => JSON.stringify(a) == JSON.stringify([[6]])) + 1;
-console.log(idx1, idx2, idx1 * idx2);
+console.log(idx1 * idx2);
