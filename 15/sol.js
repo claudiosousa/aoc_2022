@@ -6,11 +6,6 @@ let sensor_beacons = (await fs.readFile('./input.txt', 'utf-8'))
   .filter(l => l)
   .map(l => [...l.matchAll(/(x|y)=([\-0-9]+)/g)].map(m => parseInt(m[2])));
 
-let [y_min, y_max] = sensor_beacons.reduce(
-  ([, , y1, y2], [, sy, , by]) => [Math.min(y1, sy, by), Math.max(y2, sy, by)],
-  [Infinity, 0]
-);
-
 const target_row_y = 2000000;
 let target_row_beacons_x = new Set();
 sensor_beacons
