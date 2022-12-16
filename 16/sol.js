@@ -29,16 +29,7 @@ while (!todo.isEmpty) {
     max_pressure = Math.max(max_pressure, total_pressure);
     let open_with_valve = new Set(open);
     open_with_valve.add(valve);
-    let empty_set = new Set();
-    for (const child of children) {
-      todo.enqueue([
-        child,
-        total_pressure,
-        minutes - 2,
-        open_with_valve,
-        empty_set,
-      ]);
-    }
+    todo.enqueue([valve, total_pressure, minutes - 1, open_with_valve]);
   }
 }
 console.log(max_pressure);
