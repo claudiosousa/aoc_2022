@@ -15,7 +15,7 @@ let todo = new Queue();
 todo.enqueue(['AA', 0, 30, new Set()]);
 let done = new Set();
 let max_pressure = 0;
-while (!todo.isEmpty) {
+while (!todo.empty) {
   let [valve, total_pressure, minutes, open] = todo.dequeue();
   if (minutes <= 1) continue;
   if (done.has(valve + total_pressure)) continue;

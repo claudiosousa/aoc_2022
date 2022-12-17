@@ -31,7 +31,7 @@ class Queue {
   get size() {
     return this.tail - this.head;
   }
-  get isEmpty() {
+  get empty() {
     return this.head == this.tail;
   }
 }
