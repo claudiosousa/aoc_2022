@@ -40,12 +40,11 @@ for (let start_valve of [...valves_with_flow_rate, 'AA']) {
 }
 
 let todo = [];
-let pressure_by_visited_nodes = new Map();
-todo.push(['AA', 26, 0, new Set()]);
+todo.push([['AA', 26], ['AA', 26], 0, new Set()]);
 
-while (todo.length > 0) {
-  let [valve, minutes, total_pressure, visited] = todo.pop();
+let max_pressure = 0;
 
+let moveValve = ([valve, minutes], total_pressure, visited, valve2) => {
   let [, children] = valves_with_flow_rate_by_id.get(valve);
   for (let [child, dist] of children) {
     if (minutes <= dist + 1) continue;
@@ -55,36 +54,20 @@ while (todo.length > 0) {
     let [child_pressure] = valves_with_flow_rate_by_id.get(child);
     let child_total_pressure =
       total_pressure + child_pressure * (minutes - dist - 1);
-    const done_key = [...next_visited].sort().join();
-    if (pressure_by_visited_nodes.has(done_key)) {
-      const prev = pressure_by_visited_nodes.get(done_key);
-      prev.pressure = Math.max(prev.pressure, child_total_pressure);
-    } else {
-      pressure_by_visited_nodes.set(done_key, {
-        visited: next_visited,
-        pressure: child_total_pressure,
-      });
-    }
-    todo.push([child, minutes - dist - 1, child_total_pressure, next_visited]);
+    max_pressure = Math.max(max_pressure, child_total_pressure);
+    todo.push([
+      [child, minutes - dist - 1],
+      valve2,
+      child_total_pressure,
+      next_visited,
+    ]);
   }
-}
+};
 
-let max_pressure_both_paths = 0;
-for (let [
-  ,
-  { visited: visited1, pressure: pressure1 },
-] of pressure_by_visited_nodes) {
-  let visited1_arr = [...visited1];
-  for (let [
-    ,
-    { visited: visited2, pressure: pressure2 },
-  ] of pressure_by_visited_nodes) {
-    if (visited1_arr.some(v1 => visited2.has(v1))) continue;
-    max_pressure_both_paths = Math.max(
-      max_pressure_both_paths,
-      pressure1 + pressure2
-    );
-  }
+while (todo.length > 0) {
+  let [valve1, valve2, total_pressure, visited] = todo.pop();
+  moveValve(valve1, total_pressure, visited, valve2);
+  if (valve1[0] != valve2[0] || valve1[1] != valve2[1])
+    moveValve(valve2, total_pressure, visited, valve1);
 }
-
-console.log(max_pressure_both_paths);
+console.log(max_pressure);
