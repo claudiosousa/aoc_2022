@@ -5,8 +5,6 @@ type Position = {x: number; y: number;};
 type Blizzard = Position & {dir: Direction;};
 
 const blizzards_chars = ['>', 'v', '<', '^'];
-// import {promises as fs} from 'fs';
-// const map = (await fs.readFile('./input.txt', 'utf-8')).toString()
 const map = (await Deno.readTextFile('./input.txt'))
   .split('\n')
   .filter(l => l)
